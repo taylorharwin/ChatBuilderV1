@@ -40,7 +40,7 @@ color: #005CB9;
         $('.messages').append(each_chat);
       }
     },
-    getBack: function(cb, ) {
+    getBack: function(cb) {
       $.get('https://api.parse.com/1/classes/chats?order=-createdAt', function(response) {
         var AllChats = [];
         for (var j = 0; j < response.results.length; j++) {
