@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <script src="jquery-1.10.2.js"></script>
+    <script src="http://chatbuilder.hackreactor.com/ChatBuilder.js"></script>
+    <style type="text/css"> 
+<form {
+width: 300px;
+background-color: #C4D8E2;
+border: 1px solid #4040FF;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+padding: 15px 15px 15px 15px;
+type="text/css">
+.courier {
+font-family: Courier;
+color: #005CB9;
+}
+
+
+}> 
+</style> 
+  </head>
+  <body>
+  <body style="background-color:#C4D8E2;"></body>
+
+    <script>
+
+    delete Chat.display;
+  delete Chat.fetch;
+  delete Chat.send;
+
+  var Chats = {
+    display: function(input) {
+      for (var i = 0; i < input.length; i++) {
+        var each_chat = $("<li>" + input[i] + "</li>");
+        $('.messages').append(each_chat);
+      }
+    },
+    getBack: function(cb, ) {
+      $.get('https://api.parse.com/1/classes/chats?order=-createdAt', function(response) {
+        var AllChats = [];
+        for (var j = 0; j < response.results.length; j++) {
+          AllChats.push(response.results[j].text);
+        }
+        cb(AllChats);
+      });
+
+    },
+    sendAway: function() {
+      var json_chat = JSON.stringify({
+        text: ($("#userInput").val())
+      });
+      $.post('https://api.parse.com/1/classes/chats', json_chat);
+    }
+  };
+
+  $(document).ready(function() {
+    $("button").on("click", function() {
+      Chats.sendAway();
+      $('#userInput').val('');
+    });
+
+    $('#userInput').keydown(function(e) {
+      if (e.keyCode == 13) {
+        Chats.sendAway();
+        $('#userInput').val('');
+      }
+    });
+    setInterval(function() {
+      Chats.getBack(function(allChats) {
+        Chats.display(allChats);
+      });
+    }, 6000);
+  });
+
+    </script> 
+
+
+    <h2>T-Chat</h2>
+<input class="draft" type="text" id = "userInput"/> <button class="Send" >Send Chat</button>
+
+    <ul class="messages">
+    
+    </ul>
+  </body>
+</html>
